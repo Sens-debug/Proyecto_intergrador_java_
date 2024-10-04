@@ -73,7 +73,10 @@ public class Main {
                     break; // break "case 3"
 
             }
-        }
+            
+        }teclado.close();
+        
+
 
     }
 }
