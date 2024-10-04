@@ -18,6 +18,7 @@ public class Main {
             int centinela = teclado.nextInt();
             switch (centinela) {
                 case 1:
+                System.out.println("SELECCIONÓ --> REGISTRAR USUARIO");
 
                     Scanner input = new Scanner(System.in);
                     try {
@@ -54,7 +55,7 @@ public class Main {
                         try {
                         if (users.get(i).equals(tryUser) && passwords.get(i).equals(tryPassword)) {
                         System.out.println("INICIO DE SESION EXITOSO\n");
-                        System.out.println("Bienvenido " + users.get(i));
+                        System.out.println("Bienvenido " + users.get(i)+"\n");
                         break;
                     }
                     else{continue;}
