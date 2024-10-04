@@ -1,27 +1,79 @@
 package com.example;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {//Credenciales asignadas desde codigo; una vez se aplique BD se podrán reasignar libremente
-        String tryUser, tryPassword;
-        String user = "admin";
-        String password = "admon";
+    public static void main(String[] args) {
+        String tryUser, tryPassword, user, password;
         Scanner teclado = new Scanner(System.in);
-        System.out.println("A continuacion se verá dentro de la pestaña 'LOG-IN'");
-        while (true) {
-            System.out.println("Ingrese su nombre de usuario:");
-            tryUser = teclado.nextLine();
-            System.out.println("Ingrese su contraseña:");
-            tryPassword = teclado.nextLine();
-            if (!tryUser.equals(user) || !tryPassword.equals(password)) {
-                System.out.println("Credenciales incorrectas: \nVuelva a intentar");
-            }
-            if (tryUser.equals(user) && tryPassword.equals(password)) {
-                System.out.println("Credenciales correctas \nINICIANDO SESIÓN");
-                break;
+        ArrayList<String> users = new ArrayList<>(); // contenedor iterable de la credencial "usuario"
+        ArrayList<String> passwords = new ArrayList<>(); // contenedor iterable de la credencial "contraseña"
+        boolean centinelaW = true;
+        while (centinelaW) {
+            System.out.println("Ingrese una opcion valida dentro del formulario \n");
+            System.out.println("1. REGISTRAR USUARIO\n");
+            System.out.println("2. INICIAR SESIÓN\n");
+            System.out.println("3. SALIR\n");
+            int centinela = teclado.nextInt();
+            switch (centinela) {
+                case 1:
+
+                    Scanner input = new Scanner(System.in);
+                    try {
+                        System.out.println("Ingrese el usuario a registrar");
+                        user = input.nextLine();
+                        users.add(user);
+                        System.out.println("Usuario valido");
+                    } catch (Exception e) {
+                        System.out.println("ERROR EN EL REGISTRO; USUARIO INVALIDO.\n vuelva a intentarlo");
+                        break;
+                    }
+                    try {
+                        System.out.println("Ingrese la contraseña a registrar");
+                        password = input.nextLine();
+                        passwords.add(password);
+
+                    } catch (Exception e) {
+                        System.out.println("ERROR EN EL REGISTRO; CONTRASEÑA INVALIDA.\n vuelva a intentar");
+                        break;
+                    }
+                    System.out.println("Registro exitoso, puede registrar otro usuario repitiendo el formulario\n\n");
+
+                    break;// break "case 1"
+
+                case 2:
+                    Scanner input2 = new Scanner(System.in);
+                    System.out.println("SELECCIONÓ --> INICIO DE SESION\n");
+                    System.out.println("INGRESE USUARIO");
+                    tryUser = input2.nextLine();
+                    System.out.println("INGRESE CONTRASEÑA");
+                    tryPassword = input2.nextLine();
+                    for (int i = 0; i <= passwords.size(); i++) {
+                    
+                        try {
+                        if (users.get(i).equals(tryUser) && passwords.get(i).equals(tryPassword)) {
+                        System.out.println("INICIO DE SESION EXITOSO\n");
+                        System.out.println("Bienvenido " + users.get(i));
+                        break;
+                    }
+                    else{continue;}
+                        
+                    } catch (Exception e) {System.out.println("CREDENCIALES INVALIDAS\n");
+                        
+                    }
+                        
+
+                    }
+                    break;// break "case 2"
+
+                case 3:
+                    System.out.println("SALIENDO\nGRACIAS POR USAR LA INTERFAZ");
+                    centinelaW = false;
+                    break; // break "case 3"
+
             }
         }
-        teclado.close();
+
     }
 }
