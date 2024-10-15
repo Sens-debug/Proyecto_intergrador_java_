@@ -1,6 +1,8 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -95,12 +97,12 @@ public class Main {
                                             break;
 
                                         case 2:
-                                            System.out.println("GRACIAS\nSALIENDO");
+                                            System.out.println("GRACIAS\nSALIENDO\n");
                                             centinelaWhileUsers = false;
                                             break;
 
                                         default:
-                                            System.out.println("OPCION INVALIDA");
+                                            System.out.println("OPCION INVALIDA\n");
                                             break;
                                     }
 
@@ -113,18 +115,27 @@ public class Main {
                                     Scanner teclado2 = new Scanner(System.in);
                                     System.out.println("QUE OPCION QUIERE REALIZAR?");
                                     System.out.println("1.MOSTRAR REGISTROS DE EMPLEADOS");
-                                    System.out.println("2.Salir de la interfaz");
+                                    System.out.println("2.Salir de la interfaz\n");
                                     int centinelaAdmin = teclado2.nextInt();
                                     switch (centinelaAdmin) {
                                         case 1:
                                             for (Map.Entry<String, ArrayList<Integer>> entry : map.entrySet()) {
                                                 String clave = entry.getKey();
                                                 ArrayList<Integer> listaHoras = entry.getValue();
-                                                System.out.println("USUARIO " + clave + ", HORAS (INGRESO, SALIDA) " + listaHoras);
+                                                    Collections.sort(listaHoras, new Comparator<Integer>() {
+                                                    @Override
+                                                    public int compare(Integer a, Integer b) {
+                                                    return b.compareTo(a); // Cambia el orden para mayor a menor
+                                                    }
+                                                    });
+                                                    int horasTotales=listaHoras.get(0)-listaHoras.get(1);
+                                                    
+                                                
+                                                System.out.println("USUARIO-->" + clave + " , HORAS (INGRESO, SALIDA)-->" + listaHoras+" TOTAL DIARIO -->"+horasTotales);
                                             }
                                             break;
                                         case 2:
-                                            System.out.println("Gracias por unas la interfaz\nSALIENDO");
+                                            System.out.println("Gracias por usar la interfaz\nSALIENDO");
                                             centinelaWhileAdmin=false;
                                             break;
 
