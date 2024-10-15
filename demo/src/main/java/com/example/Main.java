@@ -18,7 +18,7 @@ public class Main {
             int centinela = teclado.nextInt();
             switch (centinela) {
                 case 1:
-                System.out.println("SELECCIONÓ --> REGISTRAR USUARIO");
+                    System.out.println("SELECCIONÓ --> REGISTRAR USUARIO");
 
                     Scanner input = new Scanner(System.in);
                     try {
@@ -26,17 +26,13 @@ public class Main {
                         user = input.nextLine();
                         users.add(user);
                         System.out.println("Usuario valido");
-                    } catch (Exception e) {
-                        System.out.println("ERROR EN EL REGISTRO; USUARIO INVALIDO.\n vuelva a intentarlo");
-                        break;
-                    }
-                    try {
+                   
                         System.out.println("Ingrese la contraseña a registrar");
                         password = input.nextLine();
                         passwords.add(password);
 
-                    } catch (Exception e) {
-                        System.out.println("ERROR EN EL REGISTRO; CONTRASEÑA INVALIDA.\n vuelva a intentar");
+                    }catch (Exception e) {
+                        System.out.println("ERROR EN EL REGISTRO; CRENDECIALES INVALIDAS.\n vuelva a intentar");
                         break;
                     }
                     System.out.println("Registro exitoso, puede registrar otro usuario repitiendo el formulario\n\n");
@@ -51,19 +47,20 @@ public class Main {
                     System.out.println("INGRESE CONTRASEÑA");
                     tryPassword = input2.nextLine();
                     for (int i = 0; i <= passwords.size(); i++) {
-                    
+
                         try {
-                        if (users.get(i).equals(tryUser) && passwords.get(i).equals(tryPassword)) {
-                        System.out.println("INICIO DE SESION EXITOSO\n");
-                        System.out.println("Bienvenido " + users.get(i)+"\n");
-                        break;
-                    }
-                    else{continue;}
-                        
-                    } catch (Exception e) {System.out.println("CREDENCIALES INVALIDAS\n");
-                        
-                    }
-                        
+                            if (users.get(i).equals(tryUser) && passwords.get(i).equals(tryPassword)) {
+                                System.out.println("INICIO DE SESION EXITOSO\n");
+                                System.out.println("Bienvenido " + users.get(i) + "\n");
+                                break;
+                            } else {
+                                continue;
+                            }
+
+                        } catch (Exception e) {
+                            System.out.println("CREDENCIALES INVALIDAS\n");
+
+                        }
 
                     }
                     break;// break "case 2"
@@ -73,11 +70,13 @@ public class Main {
                     centinelaW = false;
                     break; // break "case 3"
 
-            }
-            
-        }teclado.close();
-        
+                default : 
+                System.out.println("ingrese una opcion valida dentro del menu\n");
 
+            }
+
+        }
+        teclado.close();
 
     }
 }
