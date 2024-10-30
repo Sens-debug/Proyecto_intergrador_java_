@@ -146,12 +146,12 @@ class Empleados {
     public void crearEmpleado(ArrayList<Empleados> listaEmpleados) {
          Scanner teclado = new Scanner(System.in);
          System.out.println("Ingrese el nombre del nuevo empleado");
-         String nombreEmpleado = teclado.next();
+         String nombreEmpleado = teclado.nextLine();
          System.out.println("Ingrese la contraseña del nuevo empleado");
-         String contraseñaEmpleado = teclado.next();
+         String contraseñaEmpleado = teclado.nextLine();
          
          for(int i=0; i<listaEmpleados.size(); i++){
-         if (nombreEmpleado== null && contraseñaEmpleado== null) {
+         if (nombreEmpleado.equals("") && contraseñaEmpleado.equals("")) {
             System.out.println("CREDENCIALES INVALIDAS -> VACIAS");
             return;
          }
