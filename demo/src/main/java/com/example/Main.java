@@ -15,8 +15,8 @@ class Empleados {
     String contraseña;
     HashMap<String, Boolean> diasSemana ;
     LocalTime[]horasRegistradas;
-    HashMap<String, ArrayList<String>> registro ;
-    ArrayList<String>registroH;
+    HashMap<String, String[]> registro ;
+    
 
     
     // ---------------------CONSTRUCTOR -> EMPLEADOS ----------------------------
@@ -25,7 +25,7 @@ class Empleados {
         this.usuario = usuario;//Usuario corresponde a nombre del empleado
         this.contraseña = contraseña;//Contraseña corresponde a la contraseña del empleado
         horasRegistradas = new LocalTime[2]; //Creacion del contenedor iterable que almacena las horas diarias (2 registros LocalTime)
-        registroH = new ArrayList<>();//Contenedor iterable que almacena las fechas registradas (LocalTime no es imprimible)
+        //Contenedor iterable que almacena las fechas registradas (LocalTime no es imprimible)
         registro = new HashMap<>();//Registro va a combinar lo almacenado en "horas"(value) con (key ->) correspondiente al dia
         diasSemana  = new HashMap<>();//diasSemana contiene longitud de semana como clave y un valor que asignara disponibilidad
         
@@ -60,7 +60,7 @@ class Empleados {
     //----------------------METODOS DE CLASE -> EMPLEADOS-----------------------------------------------
 
     // ---------------------METODO PARA REGISTRAR ENTRADA Y SALIDA DE EMPLEADOS----------------------------
-    public  void registroHoras(LocalTime[]horasRegistradas) {
+    public void registroHoras(LocalTime[]horasRegistradas) {
        String diaSeleccionado = menuSelectorDias(diasSemana);
         if (diasSemana.get(diaSeleccionado)) {
         Scanner teclado = new Scanner(System.in);
@@ -69,7 +69,7 @@ class Empleados {
         Integer horaIn = teclado.nextInt();
         System.out.println("ESCRIBA EL MINUTO CORREPONDIENTE A SU HORA DE ENTRADA (SI ENTRO EN PUNTO ESCRIBA '0')");
         Integer minutoIn = teclado.nextInt();
-        if (horaIn > 24 || horaIn <0) {
+        if (horaIn > 23 || horaIn <0) {
             System.out.println("RANGO HORARIO INVALIDO");
             return;
         }else if(minutoIn<0 || minutoIn >59){
@@ -83,7 +83,7 @@ class Empleados {
          Integer horaOut = teclado.nextInt();
          System.out.println("ESCRIBA EL MINUTO CORREPONDIENTE A SU HORA DE SALIDA (SI ENTRO EN PUNTO ESCRIBA '0')");
          Integer minutoOut = teclado.nextInt();
-         if (horaOut > 24 || horaOut <0) {
+         if (horaOut > 23 || horaOut <0) {
              System.out.println("RANGO HORARIO INVALIDO");
              return;
          }else if(minutoOut<0 || minutoOut >59){
@@ -96,13 +96,14 @@ class Empleados {
          horasRegistradas[1]= horaSalida;
 
 
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm "); //("a" Atributo que permite impesion de AM o PM )se crea un formateador para poder imprimir los registros
-        registroH.add(horaIngreso.format(formatter));
-        registroH.add(horaSalida.format(formatter));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a"); //("a" Atributo que permite impesion de AM o PM )se crea un formateador para poder imprimir los registros
+        String[] registroH = new String[2];
+        registroH[0]=horaIngreso.format(formatter);
+        registroH[1]=horaSalida.format(formatter);
         registro.put(diaSeleccionado,registroH);
 
          diasSemana.put(diaSeleccionado, false);
+         return;
 
         }else{
             System.out.println("DIA NO DISPONIBLE");
@@ -166,18 +167,22 @@ class Empleados {
         } //---------------------FIN METODO "CREAR-EMPELADO"------------------------------------------
 
       //--------------------METODO "IMPRIMIR_REGISTROS_EMPLEADOS"---------------------------------------
-       public void impirmirRegistrosEmpleados(ArrayList<Empleados>listaEmpleados){ 
-         
-        for(int i =0;i<listaEmpleados.size();i++){
+       public void impirmirRegistrosEmpleados(HashMap<String, String[]> registro,String user, ArrayList<Empleados>listaEmpleados) { 
+         System.out.println("------------------\n"+user + "--> Registro de Empleado:");
+         for (String key : registro.keySet()) {
+            if (registro.get(key)!=null) {
+                System.out.println("DIA: " + key + ", HORAS: " + Arrays.toString(registro.get(key))); 
+            }else{System.out.println("DIA: "+key+ ", NO HAY REGISTROS");}
+        } 
             
-            System.out.println(listaEmpleados.get(i).usuario+"\n -> REGISTRO HORARIO ALMACENADO -> "+ listaEmpleados.get(i).registro);
-          
-       }}
+        System.out.println("-------------------------------------------------");
+        } 
+    
+
     //-------------------------------FIN DE METODO "IMPRIMIR_REGISTROS_EMPLEADOS"-----------------------
          
         
-    
-} //----------------------FIN METODOS DE CLASE -> ADMINISTRADOR------------------------------
+    } //----------------------FIN METODOS DE CLASE -> ADMINISTRADOR------------------------------
 //---------------------------------FIN CLASE -> ADMINISTRADOR-------------------------------------------------
 
 
@@ -189,7 +194,7 @@ public class Main {
  public static void LogIn(String tryUser, String tryPassword, ArrayList<Empleados> listaEmpleados, Administrador admin){
 
     if(tryUser.equals(admin.usuario) && tryPassword.equals(admin.password)){ //VERIFICA SI LAS CREDENCIALES COINCIDEN CON LAS DEL ADMIN 
-         System.out.println("Bienvenido Administrador\n");
+         System.out.println("Bienvenido Administrador\n");  
          boolean centinelaWhileAdmin= true;
          while (centinelaWhileAdmin) {
          Scanner teclado = new Scanner(System.in);
@@ -203,7 +208,8 @@ public class Main {
                 admin.crearEmpleado(listaEmpleados);
                 break;
             case 2:
-                admin.impirmirRegistrosEmpleados(listaEmpleados);
+                for (int i=0; i<listaEmpleados.size(); i++){
+                admin.impirmirRegistrosEmpleados(listaEmpleados.get(i).registro, listaEmpleados.get(i).usuario, listaEmpleados);}
             break;
             
             case 3:
@@ -258,6 +264,7 @@ public class Main {
         Administrador admin = new Administrador();
         ArrayList<Empleados> listaEmpleados = new ArrayList<>();
         Scanner tecladoMain = new Scanner(System.in);
+        listaEmpleados.add(new Empleados("test", "test"));
         System.out.println("BIENVENIDO");
         while (true) {
         System.out.println("QUE ACCION DESEA REALIZAR?");
