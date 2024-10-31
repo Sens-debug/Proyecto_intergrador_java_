@@ -1,5 +1,6 @@
 package com.example;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -170,8 +171,13 @@ class Empleados {
        public void impirmirRegistrosEmpleados(HashMap<String, String[]> registro,String user, ArrayList<Empleados>listaEmpleados) { 
          System.out.println("------------------\n"+user + "--> Registro de Empleado:");
          for (String key : registro.keySet()) {
+            String[] horas =registro.get(key);
             if (registro.get(key)!=null) {
-                System.out.println("DIA: " + key + ", HORAS: " + Arrays.toString(registro.get(key))); 
+                LocalTime horaEntrada = LocalTime.parse(horas[0], DateTimeFormatter.ofPattern("hh:mm a")); 
+                LocalTime horaSalida = LocalTime.parse(horas[1], DateTimeFormatter.ofPattern("hh:mm a")); 
+                Duration duracion = Duration.between(horaEntrada, horaSalida); long horasTrabajadas = duracion.toHours(); 
+                long minutosTrabajados = duracion.toMinutes() % 60; 
+                System.out.println("DIA: " + key + ", HORAS: " + Arrays.toString(horas) + ", DURACIÓN: " + horasTrabajadas + " horas y " + minutosTrabajados + " minutos"); 
             }else{System.out.println("DIA: "+key+ ", NO HAY REGISTROS");}
         } 
             
