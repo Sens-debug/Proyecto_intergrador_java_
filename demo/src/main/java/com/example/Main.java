@@ -44,15 +44,13 @@ class Empleados {
         //-----------FIN DECLARACION DE REGISTROS DEL MAP "diasSemana" ----------------------
 
      //---------DECLARACION DE REGISTROS DENTRO DEL MAP "Registro" ------------------
-        {
-         registro.put("Lunes", null);
-         registro.put("Martes", null);
-         registro.put("Miercoles", null);
-         registro.put("Jueves", null);
-         registro.put("Viernes", null);
-         registro.put("Sabado", null);
-         registro.put("Domingo", null);
-         }
+        // {
+        //  registro.put("Lunes", null);EJEMPLO MOCHO DEL COMO SERÍA SIN BUCLE == VALIDO
+        //  registro.put("Martes", null);
+        //}
+        for(String dia:diasSemana.keySet()){ //BUCLE AUTORELLENADOR DE HASHMAP 
+            registro.put(dia, null);//¿Razón? clonamos "keys" asignamos un mismo valor a todos los registros; el bucle lo permite
+        }
         //-----------FIN DECLARACION DE REGISTROS DEL MAP "Registro" ----------------------
     
     }
@@ -70,13 +68,10 @@ class Empleados {
         Integer horaIn = teclado.nextInt();
         System.out.println("ESCRIBA EL MINUTO CORREPONDIENTE A SU HORA DE ENTRADA (SI ENTRO EN PUNTO ESCRIBA '0')");
         Integer minutoIn = teclado.nextInt();
-        if (horaIn > 23 || horaIn <0) {
+         if (horaIn > 23 || horaIn <0 || minutoIn <0 || minutoIn >59) {
             System.out.println("RANGO HORARIO INVALIDO");
             return;
-        }else if(minutoIn<0 || minutoIn >59){
-            System.out.println("RANGO HORARIO INVALIDO");
-            return;
-        }
+         }
          LocalTime horaIngreso = LocalTime.of(horaIn, minutoIn);
 
          System.out.println("\n2 ---> INGRESAR HORA SALIDA");
@@ -84,13 +79,10 @@ class Empleados {
          Integer horaOut = teclado.nextInt();
          System.out.println("ESCRIBA EL MINUTO CORREPONDIENTE A SU HORA DE SALIDA (SI ENTRO EN PUNTO ESCRIBA '0')");
          Integer minutoOut = teclado.nextInt();
-         if (horaOut > 23 || horaOut <0) {
+         if (horaOut > 23 || horaOut <0 || minutoOut <0 || minutoOut >59) {
              System.out.println("RANGO HORARIO INVALIDO");
              return;
-         }else if(minutoOut<0 || minutoOut >59){
-             System.out.println("RANGO HORARIO INVALIDO");
-             return;
-            }
+         }
          LocalTime horaSalida = LocalTime.of(horaOut, minutoOut);
 
          horasRegistradas[0]= horaIngreso;
@@ -169,7 +161,7 @@ class Empleados {
 
       //--------------------METODO "IMPRIMIR_REGISTROS_EMPLEADOS"---------------------------------------
        public void impirmirRegistrosEmpleados(HashMap<String, String[]> registro,String user, ArrayList<Empleados>listaEmpleados) { 
-         System.out.println("------------------\n"+user + "--> Registro de Empleado:");
+         System.out.println("-------------------------------------\n"+user + "--> Registro de Empleado:");
          for (String key : registro.keySet()) {
             String[] horas =registro.get(key);
             if (registro.get(key)!=null) {
@@ -186,6 +178,100 @@ class Empleados {
     
 
     //-------------------------------FIN DE METODO "IMPRIMIR_REGISTROS_EMPLEADOS"-----------------------
+
+    //-------------------------------METODO VISUALIZAR CREDENCIALES EMPLEADOS ------------------------------------------
+    public void visualizarCredencialesEmpleados(ArrayList<Empleados> listaEmpleados) {
+        System.out.println("-------------------------------------\nCredenciales Empleados:");
+        for (Empleados empleado : listaEmpleados) {
+            System.out.println("USUARIO: " + empleado.usuario + ", CONTRASEÑA: " + empleado.contraseña);
+        }
+        System.out.println("-------------------------------------------------");
+    }//----------------------FIN METODO VISUALIZAR CREDENCIALES EMPLEADOS --------------------------
+
+    //---------------------- METODO ACTUALIZAR DIAS LABORABLES --------------------------
+    public void actualizarDiasLaborables(ArrayList<Empleados> listaEmpleados) {
+        boolean centinelaWhileActuDiasLaborables = true;
+        while (centinelaWhileActuDiasLaborables) { //ESTA LINEA MANTIENE EN EJECUCION EL METODO DESDE ANTES DE LA SELECCION DEL EMPLEADO       
+            int indiceEmpleado = selectorEmpleados(listaEmpleados); //metodo selector empleado(return indice ArrayList)
+            boolean centinelaWhileActuDiasLaborables2 = true;
+            while (centinelaWhileActuDiasLaborables2) {// ESTA LINEA MANTIENE EN EJECUCION EL METODO DESPUES DE LA SELECCION DEL EMPLEADO
+                String[] claves = listaEmpleados.get(indiceEmpleado).diasSemana.keySet().toArray(new String[0]);//Crea un elemnto iterable contenedor de claves(propio de cada empleado)
+                System.out.println("SELECCIONA EL DIA QUE VAS A MODIFICAR");
+                for(int i =0; i<claves.length;i++) // Recorre los dias, imprimiendo un indice dinamico; para que el usuario elija el dia
+                    {System.out.println("indice->"+i+ " "+ claves[i]);}//Impresion-> Uso del for complejo por la necesidad de var control           
+                Scanner teclado8 = new Scanner(System.in);
+                int indiceClaveSeleccionado = teclado8.nextInt();//Selecciona un indice impreso en el bucle for
+                String claveIndiceSeleccionado = claves[indiceClaveSeleccionado];//almacena la clave seleccionada a través del indice en la linea anterior
+                if (listaEmpleados.get(indiceEmpleado).diasSemana.get(claveIndiceSeleccionado)== true) {
+                    System.out.println("EL DIA "+ claveIndiceSeleccionado+ " ACTUALMENTE ESTÁ ACTIVADO ( VALIDO PARA EL REGISTRO)");
+                }
+                else if (listaEmpleados.get(indiceEmpleado).diasSemana.get(claveIndiceSeleccionado)== false){
+                    System.out.println("EL DIA "+ claveIndiceSeleccionado+ " ACTUALMENTE ESTÁ DESACTIVADO ( INVALIDO PARA EL REGISTRO)");
+                }
+                System.out.println("¿ QUE DESEA CAMBIAR DEL DIA LABORABLE ->"+claveIndiceSeleccionado+"?");
+                System.out.println("1. ACTIVAR");
+                System.out.println("2. DESACTIVAR");
+                System.out.println("3. SELECCIONAR OTRO EMPLEADO");
+                System.out.println("4. FINALIZAR SECCION");
+                int respuesta = teclado8.nextInt();
+                switch (respuesta) {
+                    case 1:
+                    if (listaEmpleados.get(indiceEmpleado).diasSemana.get(claveIndiceSeleccionado)== true) {
+                        System.out.println("EL DIA SELECCIONADO YA ESTÁ ACTIVADO");
+                        break;
+                    }else{
+                        listaEmpleados.get(indiceEmpleado).diasSemana.put(claveIndiceSeleccionado, true);
+                        System.out.println("EL DIA LABORABLE "+claveIndiceSeleccionado+" SE ACTIVÓ EXITOSAMENTE");
+                        break;
+                    }
+                        
+                    case 2:
+                    if (listaEmpleados.get(indiceEmpleado).diasSemana.get(claveIndiceSeleccionado)==false) {
+                        System.out.println("EL DIA SELECCIONADO YA ESTÁ DESACTIVADO");
+                        break;
+                    }else{
+                        listaEmpleados.get(indiceEmpleado).diasSemana.put(claveIndiceSeleccionado, false);
+                        System.out.println("EL DIA LABORABLE "+claveIndiceSeleccionado+" SE DESACTIVO EXITOSAMENTE");
+                        break;
+                    }
+
+                    case 3:
+                    System.out.println("FIN DE MODIFICACIONES EN EL USUARIO "+ listaEmpleados.get(indiceEmpleado).usuario);
+                    centinelaWhileActuDiasLaborables2 = false;
+                    break;
+                    
+                    case 4:
+                    System.out.println("SALIENDO DE LA INTERFAZ");
+                    centinelaWhileActuDiasLaborables = false;
+                    return;
+                
+                    default:
+                    System.out.println("OPCION INVALIDA");
+                        break;
+                }
+            
+            }//----------- FIN WHILE ACTUALIZAR DIAS LABORABLES-EMPLEADO SELECCIONADO --------------------------
+        }//----------- FIN WHILE ACTUALIZAR DIAS LABORABLES-SIN SELECCION EMPLEADOS --------------------------
+    }//------------------------------- FIN METODO ACTUALIZAR DIAS LABORABLES --------------------------
+        
+   
+
+    //-------------------METODO SELECTOR EMPLEADOS-------------------------
+    public int selectorEmpleados(ArrayList<Empleados> listaEmpleados) {
+        Scanner teclado7 = new Scanner(System.in);
+        System.out.println("SELECCIONE EL INDICE DEL EMPLEADO AL QUE QUIERE MODIFICAR LOS DIAS LABORABLES");
+        int seleccion;
+        for(int i=0;i < listaEmpleados.size();i++ ){
+            System.out.println("----------------------\n "+ "INDICE -> "+ i+ "-- NOMBRE "+listaEmpleados.get(i).usuario);
+        }
+        System.out.println("---------------------");
+        seleccion = teclado7.nextInt();
+        return seleccion;
+
+
+    }//---------------FIN METODO SELECTOR EMPLEADOS---------------------------
+
+
          
         
     } //----------------------FIN METODOS DE CLASE -> ADMINISTRADOR------------------------------
@@ -200,14 +286,16 @@ public class Main {
  public static void LogIn(String tryUser, String tryPassword, ArrayList<Empleados> listaEmpleados, Administrador admin){
 
     if(tryUser.equals(admin.usuario) && tryPassword.equals(admin.password)){ //VERIFICA SI LAS CREDENCIALES COINCIDEN CON LAS DEL ADMIN 
-         System.out.println("Bienvenido Administrador\n");  
+         System.out.println("\nBienvenido Administrador\n");  
          boolean centinelaWhileAdmin= true;
          while (centinelaWhileAdmin) {
          Scanner teclado = new Scanner(System.in);
          System.out.println("Seleccione la accion que desea realizar");
          System.out.println("1. -> REGISTRAR EMPLEADOS");
          System.out.println("2. -> MOSTRAR REGISTROS DE EMPLEADOS");
-         System.out.println("3. -> CERRAR SESION");
+         System.out.println("3. -> MOSTRAR CREDENCIALES DE EMPLEADOS");
+         System.out.println("4. -> MODIFICAR DIAS LABORABLES DE EMPLEADOS");
+         System.out.println("5. -> CERRAR SESION");
          int opcion = teclado.nextInt();
          switch (opcion) {
             case 1:
@@ -219,6 +307,14 @@ public class Main {
             break;
             
             case 3:
+            admin.visualizarCredencialesEmpleados(listaEmpleados);
+            break;
+            
+            case 4:
+                admin.actualizarDiasLaborables(listaEmpleados);
+            break;
+
+            case 5:
             System.out.println("SESION CERRADA CON EXITO\n");
             centinelaWhileAdmin = false;
             break;
