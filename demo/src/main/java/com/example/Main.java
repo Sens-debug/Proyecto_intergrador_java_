@@ -2,12 +2,11 @@ package com.example;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.time.format.DateTimeFormatter;
 
 //------------------CLASE -> EMPLEADOS ---------------------------
 class Empleados {
@@ -17,8 +16,6 @@ class Empleados {
     HashMap<String, Boolean> diasSemana ;
     LocalTime[]horasRegistradas;
     HashMap<String, String[]> registro ;
-    
-
     
     // ---------------------CONSTRUCTOR -> EMPLEADOS ----------------------------
     public Empleados(String usuario, String contraseña){
@@ -30,7 +27,6 @@ class Empleados {
         registro = new HashMap<>();//Registro va a combinar lo almacenado en "horas"(value) con (key ->) correspondiente al dia
         diasSemana  = new HashMap<>();//diasSemana contiene longitud de semana como clave y un valor que asignara disponibilidad
         // 
-        
         
         //---------DECLARACION DE REGISTROS DENTRO DEL MAP "diasSemana" ------------------
         {
@@ -85,10 +81,8 @@ class Empleados {
              return;
          }
          LocalTime horaSalida = LocalTime.of(horaOut, minutoOut);
-
          horasRegistradas[0]= horaIngreso;
          horasRegistradas[1]= horaSalida;
-
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a"); //("a" Atributo que permite impesion de AM o PM )se crea un formateador para poder imprimir los registros
         String[] registroH = new String[2];
@@ -120,12 +114,8 @@ class Empleados {
      int indiceClaveSeleccionado = teclado3.nextInt();
      String claveIndiceSeleccionado = claves[indiceClaveSeleccionado];
      return claveIndiceSeleccionado ;
-
-
     }
-
     //-------------------------------------FIN METODO MENU DEL SELECTOR DE DIAS ---------------------------------------------
-
 }//-------------------------------------FIN METODOS DE CLASE -> EMPLEADOS ---------------------------------------------
 //-------------------------------FIN CLASE -> EMPLEADOS----------------------------------------------
 
@@ -176,7 +166,6 @@ class Empleados {
             
         System.out.println("-------------------------------------------------");
         } 
-    
 
     //-------------------------------FIN DE METODO "IMPRIMIR_REGISTROS_EMPLEADOS"-----------------------
 
@@ -250,13 +239,10 @@ class Empleados {
                     System.out.println("OPCION INVALIDA");
                         break;
                 }
-            
             }//----------- FIN WHILE ACTUALIZAR DIAS LABORABLES-EMPLEADO SELECCIONADO --------------------------
         }//----------- FIN WHILE ACTUALIZAR DIAS LABORABLES-SIN SELECCION EMPLEADOS --------------------------
     }//------------------------------- FIN METODO ACTUALIZAR DIAS LABORABLES --------------------------
         
-   
-
     //-------------------METODO SELECTOR EMPLEADOS-------------------------
     public int selectorEmpleados(ArrayList<Empleados> listaEmpleados) {
         Scanner teclado7 = new Scanner(System.in);
@@ -269,23 +255,12 @@ class Empleados {
         seleccion = teclado7.nextInt();
         return seleccion;
 
-
     }//---------------FIN METODO SELECTOR EMPLEADOS---------------------------
 
-     
-    
-    
-    
     //----------------------FIN METODOS DE CLASE -> ADMINISTRADOR------------------------------       
     } //---------------------------------FIN CLASE -> ADMINISTRADOR-------------------------------------------------
    
-
-
-
-
-
 public class Main {
-
     //---------METODO "LOGIN" ------------
  public static void LogIn(String tryUser, String tryPassword, ArrayList<Empleados> listaEmpleados, Administrador admin){
 
@@ -328,8 +303,8 @@ public class Main {
                 break;
          } // llave correspondiente al switch case  
         }// llave correspondiente al bucle while 
-
      }// llave correspondiente al IF statement
+
      for(int i =0; i<listaEmpleados.size();i++){
      if(tryUser.equals(listaEmpleados.get(i).usuario) && tryPassword.equals(listaEmpleados.get(i).contraseña)){
         System.out.println("BIENVENIDO "+ tryUser);
@@ -343,8 +318,8 @@ public class Main {
         switch (opcion) {
             case 1:
             listaEmpleados.get(i).registroHoras(listaEmpleados.get(i).horasRegistradas);
-
                 break;
+
             case 2:
             System.out.println("SALIENDO DE LA INTERFAZ\nGRACIAS POR USAR");
             centinelaWhileEmpleados= false;
@@ -354,17 +329,12 @@ public class Main {
             System.out.println("OPCION INVALIDA");
                 break;
         }
-
         }//llave bucle while
     } //llave if statement
     } // llave bucle for
-    
-
  }
  //-----------FIN METODO "LOGIN" -----------------------
 
-
- 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Administrador admin = new Administrador();
@@ -383,14 +353,12 @@ public class Main {
                 String tryUser = sc.nextLine();
                 System.out.println("INGRESE CONTRASEÑA");
                 String tryPassword = sc.nextLine();
-        
                 LogIn(tryUser, tryPassword, listaEmpleados, admin);
                 break;
 
             case 2: 
             System.out.println("GRACIAS POR USAR");
             System.exit(0);
-            
             break;
         
             default:
@@ -399,7 +367,6 @@ public class Main {
         }
     }
     } //-------------------------------------FIN DEL MAIN ---------------------------------------------
-
 }//-------------------------------------FIN CLASE -> MAIN ---------------------------------------------
 
 //-------------------------------FIN CLASE -> MAIN----------------------------------------------
