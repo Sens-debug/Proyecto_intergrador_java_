@@ -29,6 +29,7 @@ class Empleados {
         //Contenedor iterable que almacena las fechas registradas (LocalTime no es imprimible)
         registro = new HashMap<>();//Registro va a combinar lo almacenado en "horas"(value) con (key ->) correspondiente al dia
         diasSemana  = new HashMap<>();//diasSemana contiene longitud de semana como clave y un valor que asignara disponibilidad
+        // 
         
         
         //---------DECLARACION DE REGISTROS DENTRO DEL MAP "diasSemana" ------------------
