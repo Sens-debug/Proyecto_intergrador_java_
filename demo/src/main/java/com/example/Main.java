@@ -137,7 +137,8 @@ class Empleados {
     public void impresiónComentarios(HashMap<String, ArrayList<String>>comentariosSemana){
         System.out.println();
         for(int i =0;i<comentariosSemana.values().size();i++){
-            String [] dias = comentariosSemana.keySet().toArray(new String[0]);
+            String[] dias = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+            // String [] dias = comentariosSemana.keySet().toArray(new String[0]);
             String diasBucle = dias[i];
             if (comentariosSemana.get(diasBucle)!=null) {
                 for(int varComentarios=0;varComentarios<comentariosSemana.get(diasBucle).size();varComentarios++) {
@@ -160,7 +161,9 @@ class Empleados {
         System.out.println("A CONTINUACIÓN SERA DESPLEGADO UN MENU PARA QUE SELECCIONE EL DIA QUE DESEA REGISTRAR");
         System.out.println("TENGA EN CUENTA QUE SOLO SE LE PERMITIRÁ UN REGISTRO POR DIA");
 
-        String[] claves = diasSemana.keySet().toArray(new String[0]);
+        String[] claves = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+
+        // String[] claves = diasSemana.keySet().toArray(new String[0]);
         for (int i = 0; i < claves.length; i++) {
             System.out.println("indice->" + i + " " + claves[i]);
         }
@@ -182,8 +185,8 @@ class Empleados {
 
 // ------------------CLASE ADMINISTRADOR---------------------------
 class Administrador {
-    String usuario = "ADMINISTRADOR"; // credenciales de acceso al perfil administrador
-    String password = "ADMINISTRADOR"; // credenciales de acceso al perfil administrador
+    String usuario = "ADMI"; // credenciales de acceso al perfil administrador
+    String password = "ADMI"; // credenciales de acceso al perfil administrador
 
     // ----------------------MÉTODOS DE CLASE ->
     // ADMINISTRADOR-----------------------------------------------
@@ -215,18 +218,20 @@ class Administrador {
 
     //-------------MÉTODO IMPRIMIR COMENTARIOS (RETORNA STR)--------------------------
     public String imprimirComentariosGetKey(ArrayList<Empleados> listaEmpleados, int indiceEmpleado) {
-        System.out.println("-------------------\n COMENTARIOS PARA : "+ listaEmpleados.get(indiceEmpleado).usuario);
+        System.out.println("-------------------\nCOMENTARIOS PARA : "+ listaEmpleados.get(indiceEmpleado).usuario);
            
-        String[] claves = listaEmpleados.get(indiceEmpleado).comentariosSemana.keySet().toArray(new String[0]); //contenedor iterable de las claves del MAP
+        String[] claves = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+        // String[] claves = listaEmpleados.get(indiceEmpleado).comentariosSemana.keySet().toArray(new String[0]); //contenedor iterable de las claves del MAP
 
         System.out.println("SELECCIONE EL DIA QUE QUIERE COMENTAR ( A TRAVÉS DEL INDICE)");
+        System.out.println();
             for(int i =0; i < claves.length; i++){  
                 if (listaEmpleados.get(indiceEmpleado).comentariosSemana.get(claves[i])!= null){
-                    System.out.println("INDICE : " + i +" DIA : "+ claves[i]+ " COMENTARIO : "+ listaEmpleados.get(indiceEmpleado).comentariosSemana.get(claves[i]));
+                    System.out.println("INDICE -> " + i +"| DIA : "+ claves[i]+ " COMENTARIO : "+ listaEmpleados.get(indiceEmpleado).comentariosSemana.get(claves[i]));
                     System.out.println();
                     
                 }else{
-                    System.out.println("INDICE : " + i +" DIA : "+ claves[i] + " NO HAY COMENTARIO REGISTRADO");
+                    System.out.println("INDICE ->" + i +"| DIA : "+ claves[i] + " NO HAY COMENTARIO REGISTRADO");
                     System.out.println();
                 
                     }
@@ -243,8 +248,9 @@ class Administrador {
      //-------------MÉTODO IMPRIMIR COMENTARIOS(RETORNA INT)------------------------
      public int imprimirComentariosGetIndex(ArrayList<Empleados> listaEmpleados, int indiceEmpleado) {
         System.out.println("-------------------\n COMENTARIOS PARA : "+ listaEmpleados.get(indiceEmpleado).usuario);
-           
-        String[] claves = listaEmpleados.get(indiceEmpleado).comentariosSemana.keySet().toArray(new String[0]); //contenedor iterable de las claves del MAP
+        
+        String[] claves = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+        // String[] claves = listaEmpleados.get(indiceEmpleado).comentariosSemana.keySet().toArray(new String[0]); //contenedor iterable de las claves del MAP
 
         System.out.println("SELECCIONE EL DIA QUE QUIERE COMENTAR ( A TRAVÉS DEL INDICE)");
             for(int i =0; i < claves.length; i++){
@@ -268,12 +274,12 @@ class Administrador {
     //-------------FIN MÉTODO IMPRIMIR COMENTARIOS (RETORNA INT)-----------------------
 
 
-    // --------------------MÉTODO
-    // "IMPRIMIR_REGISTROS_EMPLEADOS"---------------------------------------
+    // -----------MÉTODO "IMPRIMIR_REGISTROS_EMPLEADOS"-----------------------
     public void imprimirRegistrosEmpleados(HashMap<String, String[]> registro, String user,
             ArrayList<Empleados> listaEmpleados, HashMap<String, ArrayList<String>>comentariosSemana) {
+                String[] dias = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
         System.out.println("-------------------------------------\n" + "--> Registro de" + user + " :");
-        for (String key : registro.keySet()) {
+        for (String key : dias) {
             String[] horas = registro.get(key);
             if (registro.get(key) != null) {
                 LocalTime horaEntrada = LocalTime.parse(horas[0], DateTimeFormatter.ofPattern("hh:mm a"));
@@ -399,8 +405,8 @@ class Administrador {
 
     public void ingresoComentarios(String claveDiaSeleccionado, HashMap<String,ArrayList<String>>comentarioSemana) {
         System.out.println();
-        ArrayList<String> comentarioTemporal= new ArrayList<>();
-        if (comentarioSemana.get(claveDiaSeleccionado)== null) {
+        if (comentarioSemana.get(claveDiaSeleccionado)== null || comentarioSemana.get(claveDiaSeleccionado).isEmpty()) {
+            ArrayList<String> comentarioTemporal= new ArrayList<>();
             while (true) {
                 System.out.println("CUANDO HAYA FINALIZADO EL INGRESO DE COMENTARIOS -> ESCRIBA 'FIN'");
             System.out.println("INGRESE EL COMENTARIO");
@@ -444,7 +450,8 @@ class Administrador {
     //---------------MÉTODO ELIMINAR COMENTARIOS DEL REGISTRO-----------
         public void eliminarComentarios(int indiceDiaAEliminar, HashMap<String, ArrayList<String>> comentarios){
             System.out.println();
-            String [] claves = comentarios.keySet().toArray(new String[0]);
+            String[] claves = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+            // String [] claves = comentarios.keySet().toArray(new String[0]);
             String diaSeleccionado = claves[indiceDiaAEliminar];
             if (comentarios.get(diaSeleccionado)!=null) {
                 System.out.println("SELECCIONE EL INDICE DEL COMENTARIO QUE QUIERA ELIMINAR");
@@ -486,7 +493,8 @@ class Administrador {
     public void modificarComentarios(int indiceDiaAModificar,HashMap<String, ArrayList<String>> comentarios) {
         Scanner teclado95 = new Scanner(System.in);
         System.out.println();
-        String [] claves = comentarios.keySet().toArray(new String [0]);
+        String[] claves = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+        // String [] claves = comentarios.keySet().toArray(new String [0]);
         String diaSeleccionado = claves[indiceDiaAModificar];
         if (comentarios.get(diaSeleccionado)!=null) {
             ArrayList<String>comentariosTemp = new ArrayList<>(comentarios.get(diaSeleccionado));
@@ -496,6 +504,7 @@ class Administrador {
             }
             System.out.println("SELECCIONE EL INDICE DEL COMENTARIO A MODIFICAR");
             int indiceComentarioAMod= teclado95.nextInt();
+            teclado95.nextLine();
             System.out.println("INGRESE EL COMENTARIO CON EL QUE VA A REEMPLAZARLO");
             String comentarioReplace = teclado95.nextLine();
             comentariosTemp.set(indiceComentarioAMod, comentarioReplace);
@@ -518,7 +527,7 @@ class Administrador {
         int SELECCIÓN;
         for (int i = 0; i < listaEmpleados.size(); i++) {
             System.out.println(
-                    "----------------------\n " + "INDICE -> " + i + "-- NOMBRE " + listaEmpleados.get(i).usuario);
+                    "----------------------\n " + "INDICE -> " + i + "| NOMBRE ->" + listaEmpleados.get(i).usuario);
         }
         System.out.println("---------------------");
         SELECCIÓN = teclado7.nextInt();
@@ -527,15 +536,73 @@ class Administrador {
 
     }// ---------------FIN MÉTODO SELECTOR EMPLEADOS---------------------------
 
-    // ------------------MÉTODO MENÚ REGISTROS--------------------
+       
+    //-------------------MÉTODO MODIFICAR HORAS REGISTRADAS----------
+    public void modificarHorasRegistradas(ArrayList<Empleados>listaEmpleados,int indiceEmpleado){
+        // System.out.println("SELECCIONE EL EMPLEADO AL QUE QUIERE MODIFICAR LAS HORAS REGISTRADAS");
+        // for (int i = 0; i < listaEmpleados.size(); i++) {
+        //     System.out.println("INDICE -> "+i+"| USUARIO : "+listaEmpleados.get(i).usuario);
+        // }
+        // Scanner selectorEmpleado = new Scanner(System.in);
+        // int indiceEmpleado = selectorEmpleado.nextInt();
+
+        System.out.println("SELECCIONE EL DÍA QUE QUIERE MODIFICAR LAS HORAS REGISTRADAS");
+        String[] dias = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+        for (int index = 0; index < dias.length; index++) {
+            String horast = Arrays.toString(listaEmpleados.get(indiceEmpleado).registro.get(dias[index]));
+            System.out.println("INDICE -> " + index+ "| DIA-> "+ dias[index]+ " HORAS ->"+ horast);   
+        }
+        Scanner selectorDia = new Scanner(System.in);
+        int indiceDia = selectorDia.nextInt();
+        String claveDiaSeleccionado = dias[indiceDia];
+        if (listaEmpleados.get(indiceEmpleado).registro.get(claveDiaSeleccionado)!=null) {
+            boolean centinela=true;
+            while (centinela) {
+                System.out.println("EDITARÁ HORAS HASTA QUE DIGITE COMO 'HORA' EL #27");
+                System.out.println("SELECCIONE EL INDICE DE LA HORA QUE DESEA MODIFICAR");
+                for (int i = 0; i < listaEmpleados.get(indiceEmpleado).registro.get(claveDiaSeleccionado).length; i++){
+                    System.out.println("INDICES -> "+ i+" HORA -> "+listaEmpleados.get(indiceEmpleado).registro.get(claveDiaSeleccionado)[i]);
+                }
+                Scanner teclado77=new Scanner(System.in);
+                int indiceHoraAModificar = teclado77.nextInt();
+                System.out.println("EDITARÁ HORAS HASTA QUE DIGITE COMO 'HORA' EL #27");
+                System.out.println("INGRESE LA NUEVA HORA A ALMACENAR");
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("ESCRIBA LA HORA DE ENTRADA (FORMATO 24HR's) MAS ADELANTE SE LE SOLICITARAN LOS MINUTOS DE LA HORA");
+                Integer horaIn = scanner.nextInt();
+                if (horaIn==27) {
+                    centinela=false;
+                    return;
+                }
+                System.out.println("ESCRIBA EL MINUTO CORRESPONDIENTE A SU HORA DE ENTRADA (SI ENTRO EN PUNTO ESCRIBA '0')");
+                Integer minutoIn = scanner.nextInt();
+                if (horaIn > 23 || horaIn < 0 || minutoIn < 0 || minutoIn > 59) {
+                    System.out.println("RANGO HORARIO INVALIDO");
+                    return;
+                }
+                LocalTime horanew = LocalTime.of(horaIn, minutoIn);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+                String [] horasTemp=listaEmpleados.get(indiceEmpleado).registro.get(claveDiaSeleccionado).clone();
+                horasTemp[indiceHoraAModificar]=horanew.format(formatter);
+                listaEmpleados.get(indiceEmpleado).registro.put(claveDiaSeleccionado, horasTemp);
+            } 
+        }else{System.out.println("NO HAY REGISTROS QUE MODIFICAR");}
+        return;
+    } 
+
+    //----------------FIN METODO MODIFICAR HORAS REGISTRADAS---------
+
+
+    // ------------------MÉTODO MENÚ ADMINISTRATIVO  REGISTROS--------------------
     public void menuRegistros(ArrayList<Empleados> listaEmpleados, Administrador admin) {
             System.out.println();
             System.out.println("SELECCIONE");
             System.out.println("1. MOSTRAR REGISTROS DE EMPLEADOS");
-            System.out.println("2. ALMACENAR COMENTARIOS PARA SUS EMPLEADOS");
-            System.out.println("3. ELIMINAR COMENTARIOS PARA SUS EMPLEADOS");
-            System.out.println("4. MODIFICAR COMENTARIOS PARA SUS EMPLEADOS");
-            System.out.println("5. REGRESAR");
+            System.out.println("2. EDITAR REGISTROS DE EMPLEADOS");
+            System.out.println("3. ALMACENAR COMENTARIOS PARA SUS EMPLEADOS");
+            System.out.println("4. ELIMINAR COMENTARIOS PARA SUS EMPLEADOS");
+            System.out.println("5. MODIFICAR COMENTARIOS PARA SUS EMPLEADOS");
+            System.out.println("6. REGRESAR");
             System.out.println();
             Scanner teclado9 = new Scanner(System.in);
             int opcion = teclado9.nextInt();
@@ -550,6 +617,12 @@ class Administrador {
                     break;
 
                 case 2:
+                System.out.println("TENDRÁ QUE ELEGIR EL INDICE DEL EMPLEADO QUE QUIERA USAR");
+                int indiceEmpleadoModReg= selectorEmpleados(listaEmpleados);//Guarda el indice del empleado a modificar
+                modificarHorasRegistradas(listaEmpleados,indiceEmpleadoModReg);
+                break;
+
+                case 3:
                     System.out.println("TENDRÁ QUE ELEGIR EL INDICE DEL EMPLEADO QUE QUIERA USAR");
                     int indiceEmpleado= selectorEmpleados(listaEmpleados);//Guarda el indice del empleado a modificar
                     String claveDiaSeleccionado = imprimirComentariosGetKey(listaEmpleados, indiceEmpleado); //Linea 196, retorna la clave del dia a comentar
@@ -558,7 +631,7 @@ class Administrador {
                     System.out.println();
                 break;
 
-                case 3:
+                case 4:
                 System.out.println("TENDRÁ QUE ELEGIR EL INDICE DEL EMPLEADO QUE QUIERA USAR");
                 int indiceEmpleadoDel= selectorEmpleados(listaEmpleados);//Guarda el indice del empleado a modificar
                 int indexDiaAEliminar = imprimirComentariosGetIndex(listaEmpleados, indiceEmpleadoDel); //Linea 224, retorna la clave del dia a eliminar
@@ -567,7 +640,7 @@ class Administrador {
 
                 break;
 
-                case 4:
+                case 5:
                 System.out.println("TENDRÁ QUE ELEGIR EL INDICE DEL EMPLEADO QUE QUIERA USAR");
                 int indiceEmpleadoMod= selectorEmpleados(listaEmpleados);//Guarda el indice del empleado a modificar
                 int indexDiaAModificar = imprimirComentariosGetIndex(listaEmpleados, indiceEmpleadoMod); //Linea 224, retorna la clave del dia a eliminar
@@ -576,7 +649,7 @@ class Administrador {
 
 
                 break;
-                case 5:
+                case 6:
                 System.out.println();
                     return;
     
