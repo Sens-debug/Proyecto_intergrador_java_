@@ -126,7 +126,7 @@ public class Main {
                 case 3:
                 System.out.println("SELECCIONO -> MOSTRAR REGISTROS HORARIOS");
                 // impresionRegistrosHorarios(usuario, registroHoras);
-                System.out.println("\nFUNCIONALIDAD PENDIENTE ; SIN POO ES UN DOLOR DE GVAS\n");
+                System.out.println("");
 
                 break;
 
