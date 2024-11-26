@@ -1,4 +1,5 @@
 package com.example;
+
 import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -39,14 +40,16 @@ public class Main {
         HashMap<String, HashMap<String, List<String>>> comentariosDiarios = new HashMap<>();
 
         // ----------------------------------------------------------------
-        String usuarioAdmin = "AD";
-        String claveAdmin = "AD";
+        System.out.println(" credenciales admin : usr=0 y pasw=0");
+        String usuarioAdmin = "0";
+        String claveAdmin = "0";
 
-        System.out.println("Bienvenido");
+        System.out.println("<----Bienvenido a la interfaz de registro de horarios---->");
         while (true) {
-            System.out.println("Elija una opcion valdia");
+            System.out.println("<--------------------------->");
+            System.out.println("Elija una opción válida");
             Scanner scanner2 = new Scanner(System.in);
-            System.out.println("1 - Iniciar Sesion");
+            System.out.println("1 - Iniciar Sesión");
             System.out.println("2 - Salir");
             int opcion = scanner2.nextInt();
 
@@ -63,8 +66,9 @@ public class Main {
                     } else {
                         for (int i = 0; i < listaUsuarios.size(); i++) {
                             if (listaUsuarios.get(i).equals(usuario) && listaContraseñas.get(i).equals(contraseña)) {
-                                System.out.println("Bienvenido al Sistema " + usuario);
-                                sesionEmpleado(registroDeHoras, usuario, DiasLaborables,comentariosDiarios, diasSemana);
+                                System.out.println("Bienvenido al Sistema,  " + usuario);
+                                sesionEmpleado(registroDeHoras, usuario, DiasLaborables, comentariosDiarios,
+                                        diasSemana);
 
                             }
                         }
@@ -76,7 +80,7 @@ public class Main {
                     System.exit(0);
 
                 default:
-                    System.out.println("Opcion invalida");
+                    System.out.println("Opción inválida");
                     break;
             }
 
@@ -92,13 +96,16 @@ public class Main {
             HashMap<String, HashMap<String, List<String>>> comentariosDiarios) {
         boolean centinelaMenuAdmin = true;
         while (centinelaMenuAdmin) {
-            System.out.println("Bienvenido - ADMINISTRADOR");
+            System.out.println("<------------------------------------------>");
+            System.out.println("Bienvenido - administrador");
+            System.out.println("<------------------------------------------>");
             System.out.println("Seleccione ");
             System.out.println("1.Opciones con Usuarios\n2.Opciones con los registros de Usuarios\n3.Salir");
             Scanner scanner3 = new Scanner(System.in);
             int opcion = scanner3.nextInt();
             switch (opcion) {
                 case 1:
+                System.out.println("<--------------------------------->");
                     System.out.println("1.Crear Usuario\n2.Almacenar Comentarios\n3.Cerrar Sesion");
                     int opcion2 = scanner3.nextInt();
                     switch (opcion2) {
@@ -109,7 +116,9 @@ public class Main {
 
                             break;
                         case 2:
-                            agregarComentarios(listaUsuarios,comentariosDiarios,diasSemana);
+                        System.out.println("");
+                            agregarComentarios(listaUsuarios, comentariosDiarios, diasSemana);
+                            System.out.println("");
                             break;
                         case 3:
                             System.out.println("Cerrando Sesion");
@@ -120,25 +129,25 @@ public class Main {
                             break;
                     }// Switch anidado
                 case 2:
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("1.Imprimir Registros Horarios\n2.Cerrar Sesion");
-                int opcion3= scanner.nextInt();
-                switch (opcion3) {
-                    case 1:
-                    impresionRegistrosHorarios(registroDeHoras, diasSemana, listaUsuarios);
-                        break;
-                    
-                    case 2:
-                    System.out.println("Cerrando sesion");
-                    return;
-                    
-                    default:
-                    System.out.println("OPCION INVALIDA");
-                        break;
-                }
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.println("1.Imprimir Registros Horarios\n2.Cerrar Sesion");
+                    int opcion3 = scanner.nextInt();
+                    switch (opcion3) {
+                        case 1:
+                            impresionRegistrosHorarios(registroDeHoras, diasSemana, listaUsuarios);
+                            break;
+
+                        case 2:
+                            System.out.println("Cerrando sesion");
+                            return;
+
+                        default:
+                            System.out.println("Opción inválida");
+                            break;
+                    }
 
                 default:
-                    System.out.println("OPCIÓN INVALIDA");
+                    System.out.println("Opcion inválida");
                     break;
             }
         }
@@ -152,12 +161,13 @@ public class Main {
             HashMap<String, HashMap<String, List<String>>> comentariosDiarios) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese las credenciales del nuevo usuario");
-        System.out.println("USUARIO :");
+        System.out.println("Usuario :");
         String usuario = scanner.nextLine();
-        System.out.println("CONTRASEÑA :");
+        System.out.println("Contraseña :");
         String contraseña = scanner.nextLine();
         if (contraseña.isBlank() || usuario.isBlank()) {
             System.out.println("Credenciales Invalidas");
+            System.out.println("<------------------------->");
             return;
         } else {
             for (int i = 0; i < listaUsuarios.size(); i++) {
@@ -197,7 +207,9 @@ public class Main {
                 registros.put(dia, null);
             }
             registroDeHoras.put(usuario, registros);
+            System.out.println("");
             System.out.println("Se creó el empleado y se inicializaron todos sus conjuntos de datos");
+            System.out.println("");
 
         }
 
@@ -209,10 +221,10 @@ public class Main {
             List<String> diasSemana) {
         boolean centinelaMenuEmpleado = true;
         while (centinelaMenuEmpleado) {
-            System.out.println("SELECCIONE: ");
-            System.out.println("1. REGISTRAR HORAS: ");
-            System.out.println("2. LEER COMENTARIOS");
-            System.out.println("3. CERRAR SESIÓN: ");
+            System.out.println("<--------Seleccione--------> ");
+            System.out.println("1. Registrar horas: ");
+            System.out.println("2. Leer comentarios");
+            System.out.println("3. Cerrar sesión. ");
             Scanner teclado2 = new Scanner(System.in);
             int opcion = teclado2.nextInt();
             switch (opcion) {
@@ -223,18 +235,18 @@ public class Main {
                         LocalTime[] horasTemporal = new LocalTime[2];
                         System.out
                                 .println(
-                                        "INGRESE SU HORA DE ENTRADA (FORMATO 24HR'S). DESPUES SE LE PEDIRÁN LOS MINUTOS");
+                                        "Ingrese su hora de entrada(Formato 24HR'S). Después se le pedirán los minutos");
                         int horaIn = teclado3.nextInt();
-                        System.out.println("INGRESE LOS MINUTOS (SÍ ENTRÓ EN PUNTO ESCRIBA '0')");
+                        System.out.println("Ingrese los minutos (Si entro en punto escriba (0)");
                         int minIn = teclado3.nextInt();
                         if (horaIn > 23 || horaIn < 0 || minIn > 59 || minIn < 0) {
                             System.out.println("RANGO HORARIO INVALIDO ");
                             break;
                         }
                         System.out.println(
-                                "INGRESE SU HORA DE SALIDA (FORMATO 24HR'S). DESPUES SE LE PEDIRÁN LOS MINUTOS");
+                                "Ingrese su hora de salida(Formato 24HR'S). Después se le pedirán los minutos");
                         int horaOut = teclado3.nextInt();
-                        System.out.println("INGRESE LOS MINUTOS (SÍ ENTRÓ EN PUNTO ESCRIBA '0')");
+                        System.out.println("Ingrese los minutos (Si entro en punto escriba (0)");
                         int minOut = teclado3.nextInt();
                         if (horaOut > 23 || horaOut < 0 || minOut > 59 || minOut < 0) {
                             System.out.println("RANGO HORARIO INVALIDO");
@@ -243,7 +255,8 @@ public class Main {
                         LocalTime horaIngreso = LocalTime.of(horaIn, minIn);
                         LocalTime horaSalida = LocalTime.of(horaOut, minOut);
                         if (horaIngreso.isAfter(horaSalida)) {
-                            System.out.println("REGISTRO NO EFECTUADO-- PROBLEMAS CON LAS HORAS INGRESADAS");
+                            System.out.println("Registro no efectuado-- Problemas con las horas ingresadas");
+                            return;
                         }
                         horasTemporal[0] = horaIngreso;
                         horasTemporal[1] = horaSalida;
@@ -251,7 +264,7 @@ public class Main {
                         registroDeHoras.get(usuario).put(claveSeleccionada, horasTemporal);
                         diasLaborables.get(usuario).put(claveSeleccionada, false);
                     } else {
-                        System.out.println("DIA INVALIDO");
+                        System.out.println("Día invalido");
                     }
 
                     break;
@@ -260,12 +273,12 @@ public class Main {
                     imprimirComentarios(usuario, comentariosDiarios, diasSemana);
 
                 case 3:
-                    System.out.println("SE HA CERRADO LA SESIÓN");
+                    System.out.println("Se ha cerrado la sesión");
                     centinelaMenuEmpleado = false;
                     return;
 
                 default:
-                    System.out.println("SELECCIÓN INVALIDA");
+                    System.out.println("Selección inválida");
                     break;
             }
         }
@@ -310,11 +323,11 @@ public class Main {
                     long horasTrabajadas = duracion.toHours();
                     long minutosTrabajados = duracion.toMinutes() % 60;
                     String hrs = Arrays.toString(horas);
-                    System.out.println("DIA -> " + key + ", HORAS: " + hrs + ", DURACIÓN: " + horasTrabajadas
+                    System.out.println("DIA -> " + key + ", Horas: " + hrs + ", Duración: " + horasTrabajadas
                             + " Horas " + minutosTrabajados + " Minutos");
                     // System.out.println("EMPLEADO: " + user + ", HORAS: " + hrs );
                 } else {
-                    System.out.println("DIA " + key + ", NO HAY REGISTROS");
+                    System.out.println("Día " + key + ", No hay registros");
                 }
             }
 
@@ -330,10 +343,11 @@ public class Main {
             if (comentariosDiarios.get(usuario).get(dia) == null) {
                 System.out.println("No hay comentarios");
                 continue;
-            }else{
-            for (String comentario : comentariosDiarios.get(usuario).get(dia)) {
-                System.out.println("- "+comentario);
-            }}
+            } else {
+                for (String comentario : comentariosDiarios.get(usuario).get(dia)) {
+                    System.out.println("- " + comentario);
+                }
+            }
         }
     }
 
@@ -342,14 +356,14 @@ public class Main {
             List<String> diasSemana) {
         // Contiene la clave en texto del empleado a "trabajar"
         String empleadoSeleccionado = selectorEmpleado(listaUsuarios);
-        if (empleadoSeleccionado==null) {System.out.println("No hay empleados a los que asignar comentarios");
-        return;
-            
+        if (empleadoSeleccionado == null) {
+            System.out.println("No hay empleados a los que asignar comentarios");
+            return;
+
         }
         String diaSeleccionado = selectorDias(diasSemana);
-
-        //Este condicional controla como se prosigue sí no hay comentarios existentes
-        if (comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado)==null) {
+        // Este condicional controla como se prosigue sí no hay comentarios existentes
+        if (comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado) == null) {
 
             System.out.println("Ingrese sus comentarios para el empleado: " + empleadoSeleccionado);
             ArrayList<String> comentariosTemporal = new ArrayList<>();
@@ -364,13 +378,12 @@ public class Main {
                     comentariosTemporal.add(comentario);
                     comentariosDiarios.get(empleadoSeleccionado).put(diaSeleccionado, comentariosTemporal);
                     System.out.println("Se guardó correctamente el comentario");
-
                 }
             }
-
-        //Este condicional controla como se prosigue sí ya hay comentarios existentes
-        }else{
-            ArrayList<String> comentariosT = new ArrayList<>(comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado));
+            // Este condicional controla como se prosigue sí ya hay comentarios existentes
+        } else {
+            ArrayList<String> comentariosT = new ArrayList<>(
+                    comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado));
             boolean exec2 = true;
             while (exec2) {
                 System.out.println("El ingreso de comentarios se mantendrá valido hasta que escriba 'fin");
@@ -382,32 +395,28 @@ public class Main {
                     comentariosT.add(comentario);
                     comentariosDiarios.get(empleadoSeleccionado).put(diaSeleccionado, comentariosT);
                     System.out.println("Se guardó correctamente el comentario");
-
                 }
             }
         }
-
-
-
     }
-
     public static String selectorEmpleado(ArrayList<String> listaUsuarios) {
-        if (listaUsuarios.size()>0) {
-        System.out.println("ELIJA EL INDICE DEL EMPLEADO A COMENTAR");
-        Scanner scanner = new Scanner(System.in);
-        for (int i = 0; i < listaUsuarios.size(); i++) {
-            System.out.println("Indice -> " + i + " Nombre -> " + listaUsuarios.get(i));
+        if (listaUsuarios.size() > 0) {
+            System.out.println("Elija el indice del empleado a comentar");
+            Scanner scanner = new Scanner(System.in);
+            for (int i = 0; i < listaUsuarios.size(); i++) {
+                System.out.println("Indice -> " + i + " Nombre -> " + listaUsuarios.get(i));
+            }
+            int seleccion = scanner.nextInt();
+            String claveSeleccion = listaUsuarios.get(seleccion);
+            return claveSeleccion;
+        } else {
+            System.out.println("No hay empleado ");
+            return null;
         }
-        int seleccion = scanner.nextInt();
-        String claveSeleccion = listaUsuarios.get(seleccion);
-        return claveSeleccion;
-    }else{System.out.println("NO HAY EMPLEADOS ");
-    return null;}
-    
     }
 
     public static String selectorDias(List<String> diasSemana) {
-        System.out.println("ELIJA EL DIA QUE DESEA REGISTRAR");
+        System.out.println("Elija el día que desea registrar");
         for (int i = 0; i < diasSemana.size(); i++) {
             System.out.println("Indice -> " + i + " Dia -> " + diasSemana.get(i));
         }
