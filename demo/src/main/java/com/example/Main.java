@@ -25,15 +25,15 @@ public class Main {
 
         // Set conjunto contenedor de DiasLaborables -> DISPONIBILIDAD
         HashMap<String, HashMap<String, Boolean>> DiasLaborables = new HashMap<>();
-        // Lista seter del Boolean en DiasLaborables
-        List<Boolean> diasLaborablesBoolean = List.of(true, true, true, true, true, true, true);
+        // Lista setter del Boolean en DiasLaborables
+        List<Boolean> diasLaborablesBoolean = List.of(false, true, true, true, true, true, false);
         // conjunto "valor" de DiasLaborables
 
-        // Lista SETER de maps
+        // Lista SETTER de maps
         List<String> diasSemana = List.of("domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado");
 
         // Set conjunto contenedor de RegistrosHorarios
-        // Se setea con <diasSemana> como clave del valor
+        // Se settea con <diasSemana> como clave del valor
         HashMap<String, HashMap<String, LocalTime[]>> registroDeHoras = new HashMap<>();
 
         // Set conjunto contenedor de ComentariosDiarios
@@ -98,15 +98,16 @@ public class Main {
         while (centinelaMenuAdmin) {
             System.out.println("<------------------------------------------>");
             System.out.println("Bienvenido - administrador");
-            System.out.println("<------------------------------------------>");
+            System.out.println();
             System.out.println("Seleccione ");
-            System.out.println("1.Opciones con Usuarios\n2.Opciones con los registros de Usuarios\n3.Salir");
+            System.out.println("1.Opciones con Usuarios\n2.Opciones con los registros de Usuarios\n3.Cerrar Sesion");
             Scanner scanner3 = new Scanner(System.in);
             int opcion = scanner3.nextInt();
             switch (opcion) {
                 case 1:
-                System.out.println("<--------------------------------->");
-                    System.out.println("1.Crear Usuario\n2.Almacenar Comentarios\n3.Cerrar Sesion");
+                    System.out.println("<--------------------------------->");
+                    System.out.println(
+                            "1.Crear Usuario\n2.Almacenar Comentarios\n3.Editar Comentarios\n4.Eliminar Comentarios\n5.Cerrar Sesion");
                     int opcion2 = scanner3.nextInt();
                     switch (opcion2) {
                         case 1:
@@ -116,28 +117,40 @@ public class Main {
 
                             break;
                         case 2:
-                        System.out.println("");
+                            System.out.println("");
                             agregarComentarios(listaUsuarios, comentariosDiarios, diasSemana);
                             System.out.println("");
                             break;
                         case 3:
+                        editarComentarios(listaUsuarios, comentariosDiarios, diasSemana);   
+                            break;
+                        case 4:
+                            borrarComentarios(listaUsuarios, comentariosDiarios, diasSemana);
+                            break;
+                        case 5:
                             System.out.println("Cerrando Sesion");
                             centinelaMenuAdmin = false;
                             return;
                         default:
                             System.out.println("OPCIÓN INVALIDA");
                             break;
-                    }// Switch anidado
+                    }// Cierre del Switch anidado
+                    break; // cierre del case 1
                 case 2:
                     Scanner scanner = new Scanner(System.in);
-                    System.out.println("1.Imprimir Registros Horarios\n2.Cerrar Sesion");
+                    System.out.println("1.Imprimir Registros Horarios\n2.Modificar Registros\n3.Cerrar Sesion");
                     int opcion3 = scanner.nextInt();
                     switch (opcion3) {
+
                         case 1:
-                            impresionRegistrosHorarios(registroDeHoras, diasSemana, listaUsuarios);
+                            impresionRegistrosHorarios(comentariosDiarios, registroDeHoras, diasSemana, listaUsuarios);
                             break;
 
                         case 2:
+                            modificarHorasRegistradas(comentariosDiarios, registroDeHoras, diasSemana, listaContraseñas);
+                            break;
+
+                        case 3:
                             System.out.println("Cerrando sesion");
                             return;
 
@@ -145,7 +158,11 @@ public class Main {
                             System.out.println("Opción inválida");
                             break;
                     }
+                    break;
 
+                case 3:
+                    System.out.println("Cerrando sesion");
+                    return;
                 default:
                     System.out.println("Opcion inválida");
                     break;
@@ -229,7 +246,7 @@ public class Main {
             int opcion = teclado2.nextInt();
             switch (opcion) {
                 case 1:
-                    String claveSeleccionada = selectorDias(diasLaborables, diasSemana, usuario);
+                    String claveSeleccionada = selectorDiasRegistro(diasLaborables, diasSemana, usuario);
                     if (diasLaborables.get(usuario).get(claveSeleccionada) != false) {
                         Scanner teclado3 = new Scanner(System.in);
                         LocalTime[] horasTemporal = new LocalTime[2];
@@ -271,6 +288,7 @@ public class Main {
 
                 case 2:
                     imprimirComentarios(usuario, comentariosDiarios, diasSemana);
+                    break;
 
                 case 3:
                     System.out.println("Se ha cerrado la sesión");
@@ -284,7 +302,7 @@ public class Main {
         }
     }
 
-    public static String selectorDias(HashMap<String, HashMap<String, Boolean>> diasDisponibles,
+    public static String selectorDiasRegistro(HashMap<String, HashMap<String, Boolean>> diasDisponibles,
             List<String> diasSemana, String usuario) {
         System.out.println("Seleccione a través del indice");
         for (int i = 0; i < diasSemana.size(); i++) {
@@ -298,8 +316,13 @@ public class Main {
     }
 
     public static void impresionRegistrosHorarios(
+            HashMap<String, HashMap<String, List<String>>> comentariosDiarios,
             HashMap<String, HashMap<String, LocalTime[]>> registroHoras, List<String> diasSemana,
             ArrayList<String> listaEmpleados) {
+        if (listaEmpleados.size() < 1) {
+            System.out.println("NO HAY EMPLEADOS REGISTRADOS");
+            return;
+        }
 
         for (int z = 0; z < listaEmpleados.size(); z++) {
             String user = listaEmpleados.get(z);
@@ -308,26 +331,47 @@ public class Main {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             for (String key : diasSemana) {
                 LocalTime[] horasOrigen = registroHoras.get(user).get(key);
-
                 if (registroHoras.get(user).get(key) != null) {
                     String[] horas = new String[horasOrigen.length];
                     for (int i = 0; i < horas.length; i++) {
                         horas[i] = horasOrigen[i].format(formatter);
                     }
 
-                    // LocalTime horaEntrada = LocalTime.parse(horas[0],
-                    // DateTimeFormatter.ofPattern("hh:mm a"));
-                    // LocalTime horaSalida = LocalTime.parse(horas[1],
-                    // DateTimeFormatter.ofPattern("hh:mm a"));
                     Duration duracion = Duration.between(horasOrigen[0], horasOrigen[1]);
+                    // variable almacena la cantidad total de horas trabajadas
                     long horasTrabajadas = duracion.toHours();
+                    // almacena la cantidad de minutos correspondientes al registro horario
                     long minutosTrabajados = duracion.toMinutes() % 60;
+                    // almacena los registros de las horas, en un formato imprimible
                     String hrs = Arrays.toString(horas);
-                    System.out.println("DIA -> " + key + ", Horas: " + hrs + ", Duración: " + horasTrabajadas
-                            + " Horas " + minutosTrabajados + " Minutos");
-                    // System.out.println("EMPLEADO: " + user + ", HORAS: " + hrs );
+                    // Si las horas trabajadas son mayores a 8 horas, imprime el número de horas
+                    // extra
+                    if (horasTrabajadas > 8 && comentariosDiarios.get(user).get(key) != null) {
+                        long horasExtra = horasTrabajadas - 8;
+                        System.out.println("DIA -> " + key + ", Registro: " + hrs + ", Duración: " + horasTrabajadas
+                                + " Horas " + minutosTrabajados + " Minutos" + "|| Horas Extra? = " + horasExtra + "\n"
+                                + " -Comentarios = " + comentariosDiarios.get(user).get(key));
+                    } else {
+                        // comprueba si hay comentarios
+                        if (comentariosDiarios.get(user).get(key) != null) {
+                            // Mensaje predeterminado
+                            System.out.println("DIA -> " + key + ", Registro: " + hrs + ", Duración: " + horasTrabajadas
+                                    + " Horas " + minutosTrabajados + " Minutos" + "\n" + " -Comentarios = "
+                                    + comentariosDiarios.get(user).get(key));
+                        } else// si no hay comentarios entonces imprime esta plantilla
+                        {
+                            System.out.println("DIA -> " + key + ", Registro: " + hrs + ", Duración: " + horasTrabajadas
+                                    + " Horas " + minutosTrabajados + " Minutos " + "No hay comentarios almacenados");
+                        }
+                    }
+
                 } else {
-                    System.out.println("Día " + key + ", No hay registros");
+                    if (comentariosDiarios.get(user).get(key) != null) {
+                        System.out.println("Día " + key + ", No hay registros\n -Comentarios: "
+                                + comentariosDiarios.get(user).get(key));
+                    } else {
+                        System.out.println("Día " + key + ", No hay registros");
+                    }
                 }
             }
 
@@ -345,7 +389,7 @@ public class Main {
                 continue;
             } else {
                 for (String comentario : comentariosDiarios.get(usuario).get(dia)) {
-                    System.out.println("- " + comentario);
+                    System.out.println(" - " + comentario);
                 }
             }
         }
@@ -357,7 +401,7 @@ public class Main {
         // Contiene la clave en texto del empleado a "trabajar"
         String empleadoSeleccionado = selectorEmpleado(listaUsuarios);
         if (empleadoSeleccionado == null) {
-            System.out.println("No hay empleados a los que asignar comentarios");
+            System.out.println();
             return;
 
         }
@@ -375,6 +419,10 @@ public class Main {
                 if (comentario.equalsIgnoreCase("fin")) {
                     return;
                 } else {
+                    if (comentario.isBlank()) {
+                        System.out.println("Comentario vació. No se guardó");
+                        continue;
+                    }
                     comentariosTemporal.add(comentario);
                     comentariosDiarios.get(empleadoSeleccionado).put(diaSeleccionado, comentariosTemporal);
                     System.out.println("Se guardó correctamente el comentario");
@@ -399,6 +447,87 @@ public class Main {
             }
         }
     }
+
+    public static void editarComentarios(ArrayList<String> listaUsuarios,
+            HashMap<String, HashMap<String, List<String>>> comentariosDiarios,
+            List<String> diasSemana) {
+        // contenedor de la Key del usuario a modificar
+        String empleadoSeleccionado = selectorEmpleado(listaUsuarios);
+        if (empleadoSeleccionado != null) {
+            System.out.println("Comentarios almacenados para -> " + empleadoSeleccionado);
+            for (int x = 0; x < diasSemana.size(); x++) {
+                System.out.println("Dia -> " + diasSemana.get(x) + " || Comentarios -> "
+                        + comentariosDiarios.get(empleadoSeleccionado).get(diasSemana.get(x)));
+            }
+            System.out.println();
+            String diaSeleccionado = selectorDias(diasSemana);
+            if (comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado) != null) {
+                System.out.println("Elija el índice del comentario que desea editar");
+                for (int i = 0; i < comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).size(); i++) {
+                    System.out.println("Indice -> " + i + " Comentario -> "
+                            + comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).get(i));
+                }
+                Scanner scanner = new Scanner(System.in);
+                int seleccion = scanner.nextInt();
+                if (seleccion >= 0
+                        && seleccion < comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).size()) {
+                    System.out.println("Escriba el comentario nuevo : ");
+                    Scanner scanner2 = new Scanner(System.in);
+                    String nuevoComentario = scanner2.nextLine();
+                    ArrayList<String> comentariosActualizados = new ArrayList<String>(
+                            comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado));
+                    comentariosActualizados.set(seleccion, nuevoComentario);
+                    comentariosDiarios.get(empleadoSeleccionado).put(diaSeleccionado, comentariosActualizados);
+                    System.out.println("Comentario actualzado con exito");
+                }
+
+            } else {
+                System.out.println("No hay comentarios almacenados. Imposible editar");
+                return;
+            }
+
+        }
+
+    }
+
+    public static void borrarComentarios(ArrayList<String> listaUsuarios,
+            HashMap<String, HashMap<String, List<String>>> comentariosDiarios,
+            List<String> diasSemana) {
+        boolean centinelaEliminarComentarios = true;
+        while (centinelaEliminarComentarios) {
+            System.out.println("Desea continuar? Y/N (N finaliza la seccion)");
+            Scanner scanner3 = new Scanner(System.in);
+            String respuesta = scanner3.nextLine();
+            if (respuesta.equalsIgnoreCase("N")) {
+                System.out.println("Saliendo...");
+                return;
+            }
+            // contenedor de la Key del usuario a modificar
+            String empleadoSeleccionado = selectorEmpleado(listaUsuarios);
+            if (empleadoSeleccionado != null) {
+                System.out.println("Comentarios almacenados para -> " + empleadoSeleccionado);
+                for (int x = 0; x < diasSemana.size(); x++) {
+                    System.out.println("Dia -> " + diasSemana.get(x) + "|| Comentarios -> "
+                            + comentariosDiarios.get(empleadoSeleccionado).get(diasSemana.get(x)));
+                }
+                System.out.println();
+                String diaSeleccionado = selectorDias(diasSemana);
+                if (comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado) != null) {
+                    System.out.println("Elija el índice del comentario que desea borrar");
+                    for (int i = 0; i < comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).size(); i++) {
+                        System.out.println("Indice -> " + i + " Comentario -> "
+                                + comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).get(i));
+                    } Scanner scanner77 = new Scanner(System.in);
+                    int seleccionDia = scanner77.nextInt();
+                    System.out.println("Se ha eliminado corretamente el comentario '"+ comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).get(seleccionDia)+"'");
+                    comentariosDiarios.get(empleadoSeleccionado).get(diaSeleccionado).remove(seleccionDia);
+                } else {
+                    System.out.println("No hay comentarios para este dia");
+                }
+            }
+        }
+    }
+
     public static String selectorEmpleado(ArrayList<String> listaUsuarios) {
         if (listaUsuarios.size() > 0) {
             System.out.println("Elija el indice del empleado a comentar");
@@ -410,7 +539,7 @@ public class Main {
             String claveSeleccion = listaUsuarios.get(seleccion);
             return claveSeleccion;
         } else {
-            System.out.println("No hay empleado ");
+            System.out.println("No hay empleados ");
             return null;
         }
     }
@@ -424,5 +553,41 @@ public class Main {
         int seleccion = scanner.nextInt();
         String claveSeleccion = diasSemana.get(seleccion);
         return claveSeleccion;
+    }
+
+    public static void modificarHorasRegistradas(HashMap<String, HashMap<String, List<String>>> comentariosDiarios,
+            HashMap<String, HashMap<String, LocalTime[]>> registroHoras,
+            List<String> diasSemana,
+            ArrayList<String> listaEmpleados) {
+        System.out.println("Desea ver los registros? Y/N");
+        Scanner scanner6 = new Scanner(System.in);
+        String eleccion = scanner6.nextLine();
+        if (eleccion.equalsIgnoreCase("Y")) {
+            impresionRegistrosHorarios(comentariosDiarios, registroHoras, diasSemana, listaEmpleados);
+        }
+
+        String empleadoSeleccionado = selectorEmpleado(listaEmpleados);
+        if (empleadoSeleccionado==null) {return;}
+        System.out.println("Seleccine el dia que quiere modificar");
+        String diaSeleccionado = selectorDias(diasSemana);
+        if (registroHoras.get(empleadoSeleccionado).get(diaSeleccionado)!= null) {
+            System.out.println("Elija el índice de la hora que desea modificar");
+            for (int i = 0; i < registroHoras.get(empleadoSeleccionado).get(diaSeleccionado).length; i++){
+                System.out.println("Indice -> "+i+"|| Hora registrada -> "+registroHoras.get(empleadoSeleccionado).get(diaSeleccionado)[i]);
+            }
+            Scanner scanner7 = new Scanner(System.in);
+            int indiceHoraAModificar = scanner7.nextInt();
+            System.out.println("Ingrese la hora nueva (formato 24hr's) Los minutos se le solicitaran despues");
+            int horaN = scanner7.nextInt();
+            System.out.println("Ingrese los minutos nuevos si entró en punto, escriba '0'");
+            int minN = scanner7.nextInt();
+            LocalTime nuevaHora =LocalTime.of(horaN,minN);
+            registroHoras.get(empleadoSeleccionado).get(diaSeleccionado)[indiceHoraAModificar] = nuevaHora;
+        }else{System.out.println("NO HAY REGISTROS. IMPOSIBLE MODIFICAR");}
+
+    }
+
+    public static void ModificarDiasLaborables(){
+        
     }
 }
