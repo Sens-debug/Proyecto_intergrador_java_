@@ -45,11 +45,14 @@ public class Main {
         final String claveAdmin = "0";
 
         // Setteo empleados para testing
-        crearUsuarioTesting("David","1", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
-        crearUsuarioTesting("Brahian","2", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
-        crearUsuarioTesting("Juan","3", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
+        // crearUsuarioTesting("David","1", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
+        // crearUsuarioTesting("Brahian","2", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
+        // crearUsuarioTesting("Juan","3", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
+        // crearUsuarioTesting("Randy1","", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
+        // crearUsuarioTesting("Randy2","", listaUsuarios, listaContraseñas, diasSemana, diasLaborablesBoolean, DiasLaborables, registroDeHoras, comentariosDiarios);
 
         System.out.println("<----Bienvenido a la interfaz de registro de horarios---->");
+        try{
         while (true) {
             System.out.println("<--------------------------->");
             System.out.println("Elija una opción válida");
@@ -90,7 +93,7 @@ public class Main {
             }
 
         }
-
+    }catch (Exception e){System.out.println("err");}
     }
 
     public static void sesionAdministrador(ArrayList<String> listaUsuarios, ArrayList<String> listaContraseñas,
@@ -164,7 +167,7 @@ public class Main {
 
                         case 2:
                             modificarHorasRegistradas(comentariosDiarios, registroDeHoras, diasSemana,
-                                    listaContraseñas);
+                                    listaUsuarios);
                             break;
 
                         case 3:
@@ -423,6 +426,10 @@ public class Main {
             System.out.println("-------------------------------------\n" + user + "--> Registro de Empleado:");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             for (String key : diasSemana) {
+                if (registroHoras.get(user).get(key)==null) {
+                    System.out.println("");
+                    
+                }
                 LocalTime[] horasOrigen = registroHoras.get(user).get(key);
                 if (registroHoras.get(user).get(key) != null) {
                     String[] horas = new String[horasOrigen.length];
@@ -631,7 +638,7 @@ public class Main {
 
     public static String selectorEmpleado(ArrayList<String> listaUsuarios) {
         if (listaUsuarios.size() > 0) {
-            System.out.println("Elija el indice del empleado a comentar");
+            System.out.println("Elija el indice del empleado ");
             Scanner scanner = new Scanner(System.in);
             for (int i = 0; i < listaUsuarios.size(); i++) {
                 System.out.println("Indice -> " + i + " Nombre -> " + listaUsuarios.get(i));
